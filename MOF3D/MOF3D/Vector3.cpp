@@ -131,9 +131,9 @@ namespace vectors
 		return dot_product(*this, *this);
 	}
 	/// @todo
-	double Vector3::normal()
+	vectors::Vector3 Vector3::normal()
 	{
-
+		return ZERO;
 	}
 	void Vector3::normalize()
 	{
@@ -149,7 +149,12 @@ namespace vectors
 	}
 	double mixed_product(const Vector3 &first, const Vector3 &second, const Vector3 &third)
 	{
+		Vector3 a = first;
+		Vector3 b = second;
+		Vector3 c = third;
 
+		return a.get_x()*b.get_y()*c.get_z() + a.get_z()*b.get_x()*c.get_y() + a.get_y()*b.get_z()*c.get_x() -
+			   a.get_z()*b.get_y()*c.get_x() - a.get_x()*b.get_z()*c.get_y() - a.get_y()*b.get_x()*c.get_z();
 	}
 	Vector3 vector_product(const Vector3 &_first, const Vector3 &_second)
 	{

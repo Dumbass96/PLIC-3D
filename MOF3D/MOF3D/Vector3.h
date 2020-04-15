@@ -26,7 +26,7 @@ namespace vectors
 		/// Функции
 		double length();
 		double square_length();
-		double normal();
+		vectors::Vector3 normal();
 		void normalize();
 
 		/// операторы
@@ -52,5 +52,7 @@ namespace vectors
 	double mixed_product(const Vector3 &first, const Vector3 &second, const Vector3 &third);
 	Vector3 vector_product(const Vector3 &first, const Vector3 &second);
 	void rotate(Vector3 &vec, double angle);
+
+	Vector3 ZERO(0.0, 0.0, 0.0);
 }
 #endif
