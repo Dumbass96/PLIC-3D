@@ -43,6 +43,7 @@ namespace vectors
 		Vector3 operator = (const Vector3 &vec);
 		bool operator == (const Vector3 &vec);
 		bool operator != (const Vector3 &vec);
+		bool operator < (const Vector3 &vec);
 
 	private:
 		double x, y, z;
@@ -53,6 +54,6 @@ namespace vectors
 	Vector3 vector_product(const Vector3 &first, const Vector3 &second);
 	void rotate(Vector3 &vec, double angle);
 
-	Vector3 ZERO(0.0, 0.0, 0.0);
+	static const Vector3 ZERO(0.0, 0.0, 0.0);
 }
 #endif

@@ -19,7 +19,7 @@ public:
 	~cell() {};
 
 	std::vector<vectors::Vector3> &get_nodes();
-	std::vector<Plane> &get_faces();
+	std::vector< std::vector<vectors::Vector3> > &get_faces();
 
 	void define_convex_hull();
 	double volume();
@@ -31,7 +31,7 @@ public:
 
 private:
 	std::vector<vectors::Vector3> nodes;
-	std::vector<Plane> faces;
+	std::vector< std::vector<vectors::Vector3> > faces;
 
 };
 

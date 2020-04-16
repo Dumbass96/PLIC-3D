@@ -25,10 +25,17 @@ public:
 	double get_D();
 	void get_params(double &A, double &B, double &C, double &D);
 
+	bool point_is_in_plane(vectors::Vector3 &point);
+	bool the_same_point_orientation(vectors::Vector3 &base_point, vectors::Vector3 &check_point);
+
+	bool operator == (const Plane &other);
+	bool operator != (const Plane &other);
+
 	vectors::Vector3 normal();
 
 private:
 	double A, B, C, D;
+	double dist_eps;
 };
 
 #endif

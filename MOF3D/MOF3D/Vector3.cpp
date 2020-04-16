@@ -96,6 +96,14 @@ namespace vectors
 	{
 		return this->x != vec.x || this->y != vec.y || this->z != vec.z;
 	}
+	bool Vector3::operator < (const Vector3 &vec)
+	{
+		double length1 = this->square_length();
+		double length2 = vec.x*vec.x + vec.y*vec.y + vec.z*vec.z;
+
+		return length1 < length2;
+
+	}
 	/// Функции доступа
 	void Vector3::set_x(double &_x)
 	{
