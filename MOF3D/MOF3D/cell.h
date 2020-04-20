@@ -21,9 +21,13 @@ public:
 	std::vector<vectors::Vector3> &get_nodes();
 	std::vector< std::vector<vectors::Vector3> > &get_faces();
 
+	void compute_section(std::vector<vectors::Vector3> &result, const Plane &plane);
 	void define_convex_hull();
+	void sort_faces_vertices();
 	double volume();
+	double volumeMK();
 	double face_square(const int index);
+	bool point_inside_figure(const vectors::Vector3 &point);
 
 	vectors::Vector3 face_normal(const int index);
 	vectors::Vector3 face_center(const int index);
@@ -32,6 +36,7 @@ public:
 private:
 	std::vector<vectors::Vector3> nodes;
 	std::vector< std::vector<vectors::Vector3> > faces;
+	std::vector<Plane> faces_plane;
 
 };
 

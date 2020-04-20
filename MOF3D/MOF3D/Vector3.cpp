@@ -104,6 +104,11 @@ namespace vectors
 		return length1 < length2;
 
 	}
+	bool Vector3::operator > (const Vector3 &vec)
+	{
+		return *this < vec ? false : true;
+
+	}
 	/// Функции доступа
 	void Vector3::set_x(double &_x)
 	{
@@ -177,6 +182,15 @@ namespace vectors
 	}
 	void rotate(Vector3 &vec, double angle)
 	{
+
+	}
+
+	double angle(const Vector3 &first, const Vector3 &second)
+	{
+		vectors::Vector3 a = first;
+		vectors::Vector3 b = second;
+
+		return acos(dot_product(a, b) / a.length() / b.length());
 
 	}
 }

@@ -14,12 +14,14 @@ int main()
 		for (int j = 0; j < 2; j++)
 			for (int k = 0; k < 2; k++)
 			{
-				nodes[index] = vectors::Vector3(i, j, k);
+				nodes[index] = vectors::Vector3(0.5*i, 0.5*j, 0.5*k);
 				index++;
 			}
 
 	cell c(nodes);
 	c.define_convex_hull();
+	std::cout << "Volume = " << c.volume() << std::endl;
+	std::cout << "VolumeMK = " << c.volumeMK() << std::endl;
 
 	return 0;
 }

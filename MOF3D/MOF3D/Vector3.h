@@ -44,11 +44,13 @@ namespace vectors
 		bool operator == (const Vector3 &vec);
 		bool operator != (const Vector3 &vec);
 		bool operator < (const Vector3 &vec);
+		bool operator > (const Vector3 &vec);
 
 	private:
 		double x, y, z;
 	};
 
+	double angle(const Vector3 &first, const Vector3 &second);
 	double dot_product(const Vector3 &first, const Vector3 &second);
 	double mixed_product(const Vector3 &first, const Vector3 &second, const Vector3 &third);
 	Vector3 vector_product(const Vector3 &first, const Vector3 &second);

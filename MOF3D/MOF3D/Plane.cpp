@@ -45,6 +45,21 @@ bool Plane::the_same_point_orientation(vectors::Vector3 &base_point, vectors::Ve
 	double check_point_belong = A*check_point.get_x() + B*check_point.get_y() + C*check_point.get_z() + D;
 	return ( sign(base_point_belong) == sign(check_point_belong) ) || fabs(check_point_belong) < this->dist_eps;
 }
+double Plane::point_position(const vectors::Vector3 &point)
+{
+	vectors::Vector3 p = point;
+	return A*p.get_x() + B*p.get_y() + C*p.get_z() + D;
+}
+bool Plane::is_plane_intersection(const Plane &other)
+{
+	vectors::Vector3 n1(A, B, C);
+	vectors::Vector3 n2(other.A, other.B, other.C);
+
+	double eps = 1e-8;
+	double vector_product = vectors::vector_product(n1, n2).length();
+
+	return fabs(vector_product) < eps ? false : true;// Нормальные векторы плоскостей коллинеарны
+}
 void Plane::set_A(double _A)
 {
 	this->A = _A;

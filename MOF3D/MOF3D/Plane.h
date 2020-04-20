@@ -25,8 +25,10 @@ public:
 	double get_D();
 	void get_params(double &A, double &B, double &C, double &D);
 
+	double point_position(const vectors::Vector3 &point);
 	bool point_is_in_plane(vectors::Vector3 &point);
 	bool the_same_point_orientation(vectors::Vector3 &base_point, vectors::Vector3 &check_point);
+	bool is_plane_intersection(const Plane &other);
 
 	bool operator == (const Plane &other);
 	bool operator != (const Plane &other);
