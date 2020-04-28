@@ -1,6 +1,8 @@
 #include <cmath>
+#include <iostream>
 
 #include "Plane.h"
+#include "SLAU.h"
 
 int sign(double a)
 {
@@ -59,6 +61,72 @@ bool Plane::is_plane_intersection(const Plane &other)
 	double vector_product = vectors::vector_product(n1, n2).length();
 
 	return fabs(vector_product) < eps ? false : true;// Нормальные векторы плоскостей коллинеарны
+}
+bool Plane::intersection_with_plane(const Plane &other, vectors::Vector3 &point, vectors::Vector3 &normal)
+{
+	Plane copy = other;
+	vectors::Vector3 n1(A, B, C); n1.normalize();
+	vectors::Vector3 n2(other.A, other.B, other.C); n2.normalize();
+	vectors::Vector3 n3 = vectors::vector_product(n1, n2);
+
+	double eps = 1e-8;
+	double length = n3.square_length();
+
+	if (length < eps)
+	{
+		return false;
+	}
+	else
+	{
+		n3.normalize();
+		point = (vectors::vector_product(n3, n2) * D + vectors::vector_product(n1, n3) * copy.get_D()) / length;
+		normal = n3;
+	}
+}
+bool Plane::intersection_with_two_plane(const Plane &one, const Plane &two, vectors::Vector3 &point)
+{
+	Plane copy1 = one;
+	Plane copy2 = two;
+
+	double *x = new double[3];
+	double y[3];
+	double **a;
+	a = new double*[3];
+	for (int i = 0; i < 3; i++)
+	{
+		a[i] = new double[3];
+	}
+
+	a[0][0] = copy1.get_A();
+	a[0][1] = copy1.get_B();
+	a[0][2] = copy1.get_C();
+
+	a[1][0] = copy2.get_A();
+	a[1][1] = copy2.get_B();
+	a[1][2] = copy2.get_C();
+
+	a[2][0] = A;
+	a[2][1] = B;
+	a[2][2] = C;
+
+	y[0] = -copy1.get_D();
+	y[1] = -copy2.get_D();
+	y[2] = -D;
+
+	if (gauss(a, y, x, 3))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			std::cout << x[i] << " ";
+		}
+		std::cout << std::endl;
+		point = vectors::Vector3(x[0], x[1], x[2]);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 void Plane::set_A(double _A)
 {

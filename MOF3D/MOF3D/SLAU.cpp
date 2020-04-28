@@ -21,7 +21,7 @@ bool gauss(double **a, double *y, double *x, int n)
 	double max;
 	int k, index;
 	const double eps = 0.00001;  // точность
-	x = new double[n];
+	//x = new double[n];
 	k = 0;
 	while (k < n)
 	{
@@ -40,8 +40,8 @@ bool gauss(double **a, double *y, double *x, int n)
 		if (max < eps)
 		{
 			// нет ненулевых диагональных элементов
-			cout << "Решение получить невозможно из-за нулевого столбца ";
-			cout << index << " матрицы A" << endl;
+			//cout << "Solution was not found : zerous column ";
+			//cout << index << " of matrix" << endl;
 			return false;
 		}
 		for (int j = 0; j < n; j++)

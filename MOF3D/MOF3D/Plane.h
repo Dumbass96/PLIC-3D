@@ -29,6 +29,8 @@ public:
 	bool point_is_in_plane(vectors::Vector3 &point);
 	bool the_same_point_orientation(vectors::Vector3 &base_point, vectors::Vector3 &check_point);
 	bool is_plane_intersection(const Plane &other);
+	bool intersection_with_plane(const Plane &other, vectors::Vector3 &point, vectors::Vector3 &normal);
+	bool intersection_with_two_plane(const Plane &one, const Plane &two, vectors::Vector3 &point);
 
 	bool operator == (const Plane &other);
 	bool operator != (const Plane &other);

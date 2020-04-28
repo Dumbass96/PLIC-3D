@@ -34,6 +34,10 @@ std::vector< std::vector<vectors::Vector3> > &cell::get_faces()
 {
 	return this->faces;
 }
+std::vector<Plane> &cell::get_faces_plane()
+{
+	return this->faces_plane;
+}
 
 // Процедура определения наименьшей выпуклой оболочки из набор координат
 // оболочка упаковывается в виде набора плоскостей и набора упорядоченных точек (определяющих грань)
@@ -220,6 +224,42 @@ double cell::volume()
 	}
 	return result;
 }
+vectors::Vector3 cell::centroid()
+{
+	double cell_volume = 0.0;
+	vectors::Vector3 centroid(vectors::ZERO);
+
+	for (int iface = 0; iface < faces.size(); iface++)
+	{
+		vectors::Vector3 polyhedron_center = this->cell_center();
+		vectors::Vector3 face_center(vectors::ZERO);
+
+		for (int inode = 0; inode < faces[iface].size(); inode++)
+		{
+			face_center += faces[iface][inode];
+		}
+		face_center /= faces[iface].size();
+
+		double temp = 0.0;
+		for (int inode = 0; inode < faces[iface].size(); inode++)
+		{
+			int index = (inode + 1) % faces[iface].size();
+			vectors::Vector3 a = faces[iface][inode] - polyhedron_center;
+			vectors::Vector3 b = faces[iface][index] - polyhedron_center;
+			vectors::Vector3 c = face_center - polyhedron_center;
+			vectors::Vector3 titra_centroid = faces[iface][inode] + faces[iface][index] + polyhedron_center + face_center;
+			titra_centroid *= 0.25;
+
+			double titra_vol = 1.0 / 6.0*fabs(vectors::mixed_product(a, b, c));
+			temp += titra_vol;
+			titra_centroid *= titra_vol;
+			centroid += titra_centroid;
+		}
+		cell_volume += temp;
+	}
+	centroid /= cell_volume;
+	return centroid;
+}
 double cell::volumeMK()
 {
 	double result = 0.0;
@@ -276,17 +316,50 @@ double cell::face_square(const int index)
 {
 	return 0;
 }
-void cell::compute_section(std::vector<vectors::Vector3> &result, const Plane &plane)
+bool cell::compute_section(cell &section, const Plane &cut_plane)
 {
-	Plane copy_plane = plane;
-	std::vector<vectors::Vector3> found_points;
+	Plane copy_plane = cut_plane;
 
-	for (int iface = 0; iface < faces.size(); iface++)
+	std::vector<vectors::Vector3> cut_poly;
+
+	for (int i = 0; i < faces_plane.size(); i++)
 	{
-		for (int inode = 0; inode < nodes.size(); inode++)
+		for (int j = i + 1; j < faces_plane.size(); j++)
 		{
+			vectors::Vector3 p;
+			if (copy_plane.intersection_with_two_plane(faces_plane[i], faces_plane[j], p))
+			{
+				cut_poly.push_back(p);
+			}
 
 		}
+	}
+
+	if (cut_poly.size() > 2)
+	{
+		vectors::Vector3 cut_normal(copy_plane.get_A(), copy_plane.get_B(), copy_plane.get_C());
+		double d = copy_plane.get_D();
+
+		for (int inode = 0; inode < this->nodes.size(); inode++)
+		{
+			double position = vectors::dot_product(cut_normal, nodes[inode]) + d;
+			if (position < 1e-8)
+			{
+				cut_poly.push_back(nodes[inode]);
+			}
+		}
+
+//		std::sort(cut_poly.begin(), cut_poly.end());
+//		cut_poly.resize(unique(cut_poly.begin(), cut_poly.end()) - cut_poly.end());
+		section = cell(cut_poly);
+		std::cout << "Cutting cell \n";
+		section.define_convex_hull();
+		
+		std::cout << "Cutting volume " << section.volume() << std::endl;
+	}
+	else
+	{
+		return false;
 	}
 }
 vectors::Vector3 cell::face_normal(const int index)

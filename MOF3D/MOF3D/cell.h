@@ -20,14 +20,16 @@ public:
 
 	std::vector<vectors::Vector3> &get_nodes();
 	std::vector< std::vector<vectors::Vector3> > &get_faces();
+	std::vector<Plane> &get_faces_plane();
 
-	void compute_section(std::vector<vectors::Vector3> &result, const Plane &plane);
+	bool compute_section(cell &section, const Plane &cut_plane);
 	void define_convex_hull();
 	void sort_faces_vertices();
 	double volume();
 	double volumeMK();
 	double face_square(const int index);
 	bool point_inside_figure(const vectors::Vector3 &point);
+	vectors::Vector3 centroid();
 
 	vectors::Vector3 face_normal(const int index);
 	vectors::Vector3 face_center(const int index);
